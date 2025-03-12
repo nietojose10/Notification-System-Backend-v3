@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { AdminController } from './controller';
+import { AdminService } from '../services';
 
 
 export class AdminRoutes {
@@ -8,10 +9,11 @@ export class AdminRoutes {
 
         const router = Router();
 
-        const controller = new AdminController();
+        const adminService = new AdminService();
+        const controller = new AdminController( adminService );
 
         router.post('/newMessageType', controller.createMessageType );
-        router.post('/newNotificationType', controller.createNotificationType);
+        router.post('/newNotificationType', controller.createNotificationType );
         router.get('/getMessageTypes', controller.getMessageType );
         router.get('/getNotificationTypes', controller.getNotificationType );
 
