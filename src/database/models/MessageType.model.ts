@@ -9,4 +9,12 @@ const MessageTypeSchema = new Schema({
     }
 });
 
+MessageTypeSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function( doc, ret, options ) {
+        delete ret._id;
+    }
+});
+
 export const MessageTypeModel = mongoose.model('MessageType', MessageTypeSchema );

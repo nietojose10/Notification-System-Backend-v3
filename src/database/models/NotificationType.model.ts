@@ -9,4 +9,12 @@ const NotificationTypeSchema = new Schema({
     }
 });
 
+NotificationTypeSchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function( doc, ret, options ) {
+        delete ret._id;
+    }
+});
+
 export const NotificationTypeModel = mongoose.model('NotificationType', NotificationTypeSchema );

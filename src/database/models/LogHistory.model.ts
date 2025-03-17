@@ -27,4 +27,12 @@ const LogHistorySchema = new Schema({
     }
 });
 
+LogHistorySchema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function( doc, ret, options ) {
+        delete ret._id;
+    }
+});
+
 export const LogHistoryModel = mongoose.model('LogHistory', LogHistorySchema );
