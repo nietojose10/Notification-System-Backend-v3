@@ -4,3 +4,4 @@ export * from './broadcast.service';
 export * from './email.service';
 export * from './pushNotification.service';
 export * from './sms.service';
+export * from './logHistory.service';

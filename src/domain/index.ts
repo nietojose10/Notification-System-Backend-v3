@@ -9,3 +9,4 @@ export * from './dtos/broadcast/broadcastingProcess.dto';
 export * from './interfaces/NotificationType';
 export * from './interfaces/MessageType';
 export * from './interfaces/broadcast';
+export * from './interfaces/LogHistory';
