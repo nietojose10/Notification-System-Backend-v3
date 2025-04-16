@@ -1,7 +1,7 @@
 import { EmailService } from "./email.service";
 import { PushNotificationService } from "./pushNotification.service";
 import { SmsService } from "./sms.service";
-import { BroadcastingProcessDto, CustomError, User } from "../../domain";
+import { BroadcastingProcessDto, CustomError, HandleBroadcastingProcess, User } from "../../domain";
 import { LogHistoryModel, UserModel } from "../../database";
 
 export class BroadcastService {
@@ -16,7 +16,7 @@ export class BroadcastService {
         
         try {
             
-            const { category, message } = broadcastingProcessDto;
+            const { category } = broadcastingProcessDto;
 
             const users = await UserModel.find({ subscribed: category.toLowerCase() });
             
@@ -38,19 +38,31 @@ export class BroadcastService {
     public sendSMS = async( users: User[], broadcastingProcessDto: BroadcastingProcessDto ) => {
 
         try {
-            
-            let totalSmsSent = [];
 
-            for ( const user of users ) {
+            const { category, message } = broadcastingProcessDto;
 
-                const { category, message } = broadcastingProcessDto;
-                const response = await this.smsService.handleSmsProcess({ user: user._id as string, message: message, category: category });
-                const { messageData } = response;
-                const messageRecorded = new LogHistoryModel({ message: messageData.message, typeMessage: messageData.category, channel: messageData.channel, user: messageData.user, creationDate: messageData.creationDate });
-                await messageRecorded.save();
+            const totalSmsSent = await Promise.all(
+                users.map( async (user) => {
+                    const response = await this.smsService.handleSmsProcess({
+                    user: user._id as string,
+                    message,
+                    category,
+                    });
 
-                totalSmsSent.push(messageRecorded);
-            }
+                    const { messageData } = response;
+
+                    const messageRecorded = new LogHistoryModel({
+                    message: messageData.message,
+                    typeMessage: messageData.category,
+                    channel: messageData.channel,
+                    user: messageData.user,
+                    creationDate: messageData.creationDate,
+                    });
+
+                    await messageRecorded.save();
+                    return messageRecorded;
+                })
+            );
 
             return totalSmsSent;
 
@@ -63,19 +75,31 @@ export class BroadcastService {
     public sendEmail = async( users: User[], broadcastingProcessDto: BroadcastingProcessDto ) => {
 
         try {
-            
-            let totalEmailsSent = [];
 
-            for ( const user of users ) {
+            const { category, message } = broadcastingProcessDto;
 
-                const { category, message } = broadcastingProcessDto;
-                const response = await this.emailService.handleEmailProcess({ user: user._id as string, message: message, category: category });
-                const { messageData } = response;
-                const messageRecorded = new LogHistoryModel({ message: messageData.message, typeMessage: messageData.category, channel: messageData.channel, user: messageData.user, creationDate: messageData.creationDate });
-                await messageRecorded.save();
+            const totalEmailsSent = await Promise.all(
+                users.map( async (user) => {
+                    const response = await this.emailService.handleEmailProcess({
+                    user: user._id as string,
+                    message,
+                    category,
+                    });
 
-                totalEmailsSent.push(messageRecorded);
-            }
+                    const { messageData } = response;
+
+                    const messageRecorded = new LogHistoryModel({
+                    message: messageData.message,
+                    typeMessage: messageData.category,
+                    channel: messageData.channel,
+                    user: messageData.user,
+                    creationDate: messageData.creationDate,
+                    });
+
+                    await messageRecorded.save();
+                    return messageRecorded;
+                })
+            );
 
             return totalEmailsSent;
 
@@ -88,19 +112,31 @@ export class BroadcastService {
     public sendPushNotifications = async( users: User[], broadcastingProcessDto: BroadcastingProcessDto ) => {
 
         try {
-            
-            let totalNotificationsSent = [];
 
-            for ( const user of users ) {
+            const { category, message } = broadcastingProcessDto;
 
-                const { category, message } = broadcastingProcessDto;
-                const response = await this.pushNotificationService.handlePushNotificationProcess({ user: user._id as string, message: message, category: category });
-                const { messageData } = response;
-                const messageRecorded = new LogHistoryModel({ message: messageData.message, typeMessage: messageData.category, channel: messageData.channel, user: messageData.user, creationDate: messageData.creationDate });
-                await messageRecorded.save();
+            const totalNotificationsSent = await Promise.all(
+                users.map( async (user) => {
+                    const response = await this.pushNotificationService.handlePushNotificationProcess({
+                    user: user._id as string,
+                    message,
+                    category,
+                    });
 
-                totalNotificationsSent.push(messageRecorded);
-            }
+                    const { messageData } = response;
+
+                    const messageRecorded = new LogHistoryModel({
+                    message: messageData.message,
+                    typeMessage: messageData.category,
+                    channel: messageData.channel,
+                    user: messageData.user,
+                    creationDate: messageData.creationDate,
+                    });
+
+                    await messageRecorded.save();
+                    return messageRecorded;
+                })
+            );
 
             return totalNotificationsSent;
 
@@ -109,6 +145,5 @@ export class BroadcastService {
         }
 
     }
-
 
 }

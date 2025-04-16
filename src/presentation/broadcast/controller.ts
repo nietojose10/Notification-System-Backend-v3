@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { BroadcastingProcessDto, CustomError } from "../../domain";
+import { BroadcastingProcessDto, CustomError, HandleBroadcastingProcess } from "../../domain";
 import { BroadcastService } from "../services";
-
 
 export class BroadcastController {
 
@@ -27,12 +26,15 @@ export class BroadcastController {
         if ( error ) this.handleError( error, res );
 
         try {
-
+            
             const { usersSMS, usersEmail, usersNotification } = await this.broadcastService.getUsers( broadcastingProcessDto! );
 
-            const totalSMSSent = await this.broadcastService.sendSMS( usersSMS, broadcastingProcessDto! );
-            const totalEmailsSent = await this.broadcastService.sendEmail( usersEmail, broadcastingProcessDto! );
-            const totalNotificationsSent = await this.broadcastService.sendPushNotifications( usersNotification, broadcastingProcessDto! );
+            const [ totalSMSSent, totalEmailsSent, totalNotificationsSent ] = await Promise.all([
+                    this.broadcastService.sendSMS( usersSMS, broadcastingProcessDto! ),
+                    this.broadcastService.sendEmail( usersEmail, broadcastingProcessDto! ),
+                    this.broadcastService.sendPushNotifications( usersNotification, broadcastingProcessDto! )
+                ]
+            );
 
             res.status(200).json({
                 ok: true,

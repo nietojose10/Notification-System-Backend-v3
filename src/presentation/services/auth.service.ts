@@ -16,7 +16,6 @@ export class AuthService {
             const user = new UserModel( registerUserDto );
             user.creationDate = new Date();
             await user.save();
-            console.log(user);
             return user;
 
         } catch (error) {

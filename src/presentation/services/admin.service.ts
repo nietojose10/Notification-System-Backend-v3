@@ -13,8 +13,6 @@ export class AdminService {
         if ( existsNotificationType ) throw CustomError.badRequest('Notification type already exists');
 
         try {
-            console.log('This is the data I am sending to mongodb: ');
-            console.log(notificationTypeDto! );
             const notificationType = new NotificationTypeModel( notificationTypeDto! );
             await notificationType.save();
 
@@ -34,8 +32,6 @@ export class AdminService {
         if ( existsMessageType ) throw CustomError.badRequest('Message type already exists');
 
         try {
-            console.log('This is the data I am sending to mongodb: ');
-            console.log(messageTypeDto! );
             const messageType = new MessageTypeModel( messageTypeDto! );
             await messageType.save();
 
