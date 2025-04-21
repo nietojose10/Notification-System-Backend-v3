@@ -16,6 +16,7 @@ export class AdminRoutes {
         router.post('/newNotificationType', controller.createNotificationType );
         router.get('/getMessageTypes', controller.getMessageType );
         router.get('/getNotificationTypes', controller.getNotificationType );
+        router.get('/getUsers', controller.getUsers );
 
         return router;
     }

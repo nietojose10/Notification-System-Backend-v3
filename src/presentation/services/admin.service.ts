@@ -1,5 +1,5 @@
-import { MessageTypeModel, NotificationTypeModel } from '../../database';
-import { CustomError, MessageTypeDto, MessageType, NotificationType } from '../../domain';
+import { MessageTypeModel, NotificationTypeModel, UserModel } from '../../database';
+import { CustomError, MessageTypeDto, MessageType, NotificationType, User } from '../../domain';
 import { NotificationTypeDto } from '../../domain/dtos/admin/notificationType.dto';
 
 export class AdminService {
@@ -73,6 +73,18 @@ export class AdminService {
             throw CustomError.internalServer(`${ error }`);
         }
 
+    }
+
+    public getUsers = async(): Promise<User[]> => {
+        try {
+            
+            const users = await UserModel.find().exec();
+
+            return users;
+
+        } catch (error) {
+            throw CustomError.internalServer(`${ error }`);
+        }
     }
 
 }

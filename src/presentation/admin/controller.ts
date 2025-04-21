@@ -92,4 +92,20 @@ export class AdminController {
 
     }
 
+    public getUsers = async( req: Request, res: Response ) => {
+
+        console.log('Executing getUsers!!!');
+
+        try {
+            
+            const users = await this.adminService.getUsers();
+
+            res.status(200).json(users);
+            return;
+
+        } catch (error) {
+            this.handleError( error, res );
+        }
+    }
+
 }
