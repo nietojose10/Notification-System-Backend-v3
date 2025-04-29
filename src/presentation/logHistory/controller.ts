@@ -15,7 +15,7 @@ export class LogHistoryController {
             return res.status( error.statusCode ).json({ error: error.message });
         }
 
-        return res.status(500).json({ error: 'Interl server error' });
+        return res.status(500).json({ error: 'Internal server error' });
 
     }
 

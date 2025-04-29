@@ -19,7 +19,6 @@ export class BroadcastController {
     }
 
     public broadcastMessage = async( req: Request, res: Response ) => {
-        console.log('Broadcasting several messages!!');
 
         const [error, broadcastingProcessDto] = BroadcastingProcessDto.create( req.body );
 
