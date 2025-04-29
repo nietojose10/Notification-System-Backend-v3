@@ -20,8 +20,6 @@ export class AuthController {
 
     public registerUser = async( req: Request, res: Response ) => {
         
-        //use the dto to validate if data is correct
-
         const [error, registerDto] = RegisterUserDto.create(req.body);
 
         if ( error ) {

@@ -10,7 +10,6 @@ export class LogHistoryService {
         try {
             
             const logHistory = await LogHistoryModel.find().populate('user').exec();
-
             return logHistory;
 
         } catch (error) {

@@ -20,7 +20,6 @@ export class AdminController {
     }
 
     public createMessageType = async( req: Request, res: Response ) => {
-        console.log('Creating new Message Type');
 
         const [error, messageTypeDto] = MessageTypeDto.create( req.body );
 
@@ -30,7 +29,6 @@ export class AdminController {
             
             const newMessageType = await this.adminService.createMessageType( messageTypeDto! );
 
-            //*TEST A MESSAGE TYPE CREATION
             res.status(201).json(newMessageType);
             return;
 
@@ -41,7 +39,6 @@ export class AdminController {
     }
 
     public createNotificationType = async( req: Request, res: Response ) => {
-        console.log('Creating new Notification Type');
         
         const [error, notificationTypeDto] = NotificationTypeDto.create( req.body );
         
@@ -61,7 +58,6 @@ export class AdminController {
     }
 
     public getMessageType = async( req: Request, res: Response ) => {
-        console.log('Showing all message type');
 
         try {
             
@@ -77,8 +73,6 @@ export class AdminController {
 
     public getNotificationType = async( req: Request, res: Response ) => {
 
-        console.log('Showing all notification type');
-
         try {
             
             const notificationTypes = await this.adminService.getNotificationTypes();
@@ -93,8 +87,6 @@ export class AdminController {
     }
 
     public getUsers = async( req: Request, res: Response ) => {
-
-        console.log('Executing getUsers!!!');
 
         try {
             
