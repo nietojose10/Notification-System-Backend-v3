@@ -30,7 +30,7 @@ export class Server {
         //* Middlewares
         this.app.use( express.json() ); //raw
         this.app.use( express.urlencoded({ extended: true }) ); // x-wwww-form-urlencoded
-        this.app.use(cors()); //!Avoid this in production
+        // this.app.use(cors()); //!Avoid this in production
 
         //* Public folder
         this.app.use( express.static( this.publicPath ) );
