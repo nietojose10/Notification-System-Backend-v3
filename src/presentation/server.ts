@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import path from 'path';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 
 interface Options {
     port: number;
@@ -31,6 +32,17 @@ export class Server {
         this.app.use( express.json() ); //raw
         this.app.use( express.urlencoded({ extended: true }) ); // x-wwww-form-urlencoded
         this.app.use(cors()); //!Avoid this in production
+
+        //*Rate Limit
+        const limiter = rateLimit({
+            windowMs: 15 * 60 * 1000,
+            max: 100,
+            standardHeaders: true,
+            legacyHeaders: false,
+            message: 'You have done too many requests from this IP, you can try later.'
+        });
+
+        this.app.use(limiter);
 
         //* Public folder
         this.app.use( express.static( this.publicPath ) );
